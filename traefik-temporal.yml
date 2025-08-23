@@ -1,0 +1,55 @@
+http:
+  routers:
+    temporal-server-http:
+      rule: "Host(`temporal-server.dev.dckhi.ir`)"
+      entryPoints:
+        - http
+      middlewares:
+        - https-redirect
+      service: temporal-server
+    temporal-server-https:
+      rule: "Host(`temporal-server.dev.dckhi.ir`)"
+      entryPoints:
+        - https
+      middlewares:
+        - preserve-headers
+      service: temporal-server
+      tls:
+        certResolver: letsencrypt
+    temporal-ui-http:
+      rule: "Host(`temporal-ui.dev.dckhi.ir`)"
+      entryPoints:
+        - http
+      middlewares:
+        - https-redirect
+      service: temporal-ui
+    temporal-ui-https:
+      rule: "Host(`temporal-ui.dev.dckhi.ir`)"
+      entryPoints:
+        - https
+      middlewares:
+        - preserve-headers
+      service: temporal-ui
+      tls:
+        certResolver: letsencrypt
+  middlewares:
+    https-redirect:
+      redirectScheme:
+        scheme: https
+    preserve-headers:
+      headers:
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+        customResponseHeaders:
+          X-Forwarded-Proto: https
+  services:
+    temporal-server:
+      loadBalancer:
+        servers:
+          - url: "http://temporal:7233"
+        passHostHeader: true
+    temporal-ui:
+      loadBalancer:
+        servers:
+          - url: "http://temporal-ui:8080"
+        passHostHeader: true
