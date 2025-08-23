@@ -13,6 +13,7 @@ services:
       - 5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
   temporal:
     container_name: temporal
     depends_on:
@@ -34,6 +35,7 @@ services:
       - 7233
     volumes:
       - ./dynamicconfig:/etc/temporal/config/dynamicconfig
+    restart: unless-stopped
   temporal-admin-tools:
     container_name: temporal-admin-tools
     depends_on:
@@ -47,6 +49,7 @@ services:
       - coolify
     stdin_open: true
     tty: true
+    restart: unless-stopped
   temporal-ui:
     container_name: temporal-ui
     depends_on:
@@ -60,6 +63,7 @@ services:
       - coolify
     expose:
       - 8080
+    restart: unless-stopped
 networks:
   temporal-network:
     driver: bridge
