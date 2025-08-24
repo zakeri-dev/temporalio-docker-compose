@@ -31,9 +31,8 @@ services:
     networks:
       - temporal-network
       - coolify
-    expose:
-      - 7233
-      - 7234
+    ports:
+      - 7233:7233
     volumes:
       - ./dynamicconfig:/etc/temporal/config/dynamicconfig
     restart: unless-stopped
