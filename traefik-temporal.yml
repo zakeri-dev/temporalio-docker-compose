@@ -1,3 +1,18 @@
+tcp:
+  routers:
+    temporal-grpc:
+      rule: "HostSNI(`temporal-server.dev.dckhi.ir`)"
+      entryPoints:
+        - grpc
+      service: temporal-grpc
+      tls:
+        certResolver: letsencrypt
+  services:
+    temporal-grpc:
+      loadBalancer:
+        servers:
+          - address: "temporal:7233"
+
 http:
   routers:
     temporal-server-http:
@@ -46,7 +61,7 @@ http:
     temporal-server:
       loadBalancer:
         servers:
-          - url: "http://temporal:7233"
+          - url: "http://temporal:7234"
         passHostHeader: true
     temporal-ui:
       loadBalancer:

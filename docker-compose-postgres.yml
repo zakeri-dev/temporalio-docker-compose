@@ -33,6 +33,7 @@ services:
       - coolify
     expose:
       - 7233
+      - 7234
     volumes:
       - ./dynamicconfig:/etc/temporal/config/dynamicconfig
     restart: unless-stopped
